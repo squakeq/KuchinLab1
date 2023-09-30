@@ -1,20 +1,45 @@
-﻿// KuchinLab1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
-
+﻿#include <iostream>
+using namespace std;
+struct Pipe
+{
+	string name;
+	int length = 0;
+	int diameter = 0;
+	bool is_repairing = false;
+};
+struct compress_Station
+{
+	string name;
+	int shops_num;
+	int busy_shops_num;
+	int efficiency;
+};
+Pipe CreatePipe()
+{
+	Pipe new_pipe;
+	cout << "Type name";
+	cin >> new_pipe.name;
+	cout << "Type length";
+	cin >> new_pipe.length;
+	cout << "Type diameter";
+	cin >> new_pipe.diameter;
+	return new_pipe;
+}
+void PrintPipeInfo(const Pipe& pipe)
+{
+	string repair_status = "False";
+	if (pipe.is_repairing)
+	{
+		repair_status = "True";
+	}
+	cout << ".........." << "\n"
+		<< "Pipe Name : " << pipe.name << "\n"
+		<< "Pipe lenght:" << pipe.length << "\n"
+		<< "Pipe deameter:" << pipe.length << "\n"
+		<< "Is repairing:" << pipe.repair_status << "\n";
+}
 int main()
 {
-    std::cout << "Hello World!\n";
+	Pipe new_pipe = CreatePipe();
+	PrintPipeInfo(new_pipe);
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
