@@ -10,7 +10,7 @@ struct Pipe
 	double diameter = 0;
 	bool is_repairing = false;
 };
-struct compress_Station
+struct Compress_station
 {
 	string name;
 	int shops_num = 0;
@@ -86,6 +86,7 @@ void ChangePipeStatus(vector<Pipe>& pipes, string pipe_name)
 			}
 			pipe.is_repairing = true;
 			pipes[ind] = pipe;
+			break;
 
 		}
 	}
@@ -94,7 +95,46 @@ void ChangePipeStatus(vector<Pipe>& pipes, string pipe_name)
 	}
 	cout << "Status Changed!\n";
 }
-istream operator >> (istream& in, compress_Station& new_cs)
+void EditShops(vector<Compress_station>& stations, string ca_name, bool action, int shops_num)
+{
+	bool name_exist = false;
+	bool num_correct = false;
+	int ind = -1;
+	for (Compress_station cs : stations) {
+		ind++;
+		if (cs.name = cs_name) {
+			name_exist = true;
+			if (action) {
+				if (shops_num <= cs.shops_num - cs.busy_shops_num)
+				{
+					cs.busy_shops_num += shops_num;
+					num_correct = true;
+					stations[ind] = cs;
+					cout << "Status Changed!\n";
+				}
+				break;
+			}
+			else {
+				if (shops_num <= cs.busy_shops_num)
+				{
+					cs.busy_shops_num -= shops_num;
+					num_correct = true;
+					stations[ind] = cs;
+					cout << "Status Changed!\n";
+				}
+				break;
+			}
+		}
+	}
+	if (!name_exists) {
+		cout << "Wrong name! Try again. \n";
+		return;
+	}
+	if (!num_correct) {
+		cout << "Invalid shops amount! Try again";
+	}
+}
+istream operator >> (istream& in, Compress_station& new_cs)
 {
 	cout << "Type name: ";
 	cin >> new_cs.name:
@@ -120,11 +160,12 @@ istream operator >> (istream& in, compress_Station& new_cs)
 }
 ostream& operator << (ostream& out, const Compress_station& cs)
 {
-	out << "........" << "\n'"
+	out
 		<< "CS Name : " << cs.name << "\n"
 		<< "Overall shops: " << cs.shops_num << "\n"
 		<< "Busy shops: " << cs.busy_shops_num << "\n"
-		<< "Efficiency: " << cs.efficiency << "\n";
+		<< "Efficiency: " << cs.efficiency << "\n"
+		<< "........" << "\n";
 		return out;
 }
 istream& operator >> (istream& in, Pipe& new_pipe)
@@ -158,18 +199,19 @@ ostream& operator << (ostream& out, const Pipe& pipe)
 	{
 		repair_status = "True";
 	}
-	out << ".........." << "\n"
+	out
 		<< "Pipe Name : " << pipe.name << "\n"
 		<< "Pipe lenght:" << pipe.length << "\n"
 		<< "Pipe deameter:" << pipe.length << "\n"
-		<< "Is repairing:" << pipe.repair_status << "\n";
+		<< "Is Reapairing: " << repair_status << "\n"
+		<< "......." << "\n";
 	return out;
 
 }
 int main()
 {
 	vector <Pipe> pipes;
-	vector <compress_Station> stations;
+	vector <Compress_station> stations;
 
 	while (1)
 	{
@@ -235,6 +277,40 @@ int main()
 			cin >> pipe_name;
 			ChangePipeStatus(pipes, pipe_name);
 			break;
+		}
+		case 5:
+		{
+			string cs_name = "";
+			string action = "";
+			int shops_num = 0;
+			cout << "Type station name: ";
+			cin >> cs_name;
+			cout << "Type action (activate/disable): ";
+			cin >> action;
+			while (action != "activate" && action != "disable")
+			{
+				cin.clear();
+				cin.ignore(int(pow(10, 6)), '\n');
+				cout << "Type correct acton: ";
+				cin >> action;
+				cout << "Type amount of shops you want to edit: ";
+				cin >> shops_num;
+				while (cin.fail() || shops_num <= 0)
+				{
+					cin.clear();
+					cin.ignore(int(pow(10, 6)), '\n');
+					cout << "Type correct info: ";
+					cin >> shops_num;
+				}
+				if (action == "activate") {
+					EditShops(stations, cs_name, true, shops_num);
+					break;
+				}
+				EditShops(stations, cs_name, false, shops_num);
+				break;
+			}
+
+
 		}
 		case 8:
 		{
