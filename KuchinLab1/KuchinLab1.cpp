@@ -1,5 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <vector>
+
 using namespace std;
 struct Pipe
 {
@@ -67,10 +69,45 @@ void ShowMenu()
 		 << "5. Edit CS" << "\n"
 		 << "6. Save" << "\n"
 		 << "7. Load" << "\n"
-		 << "0. Exit" << "\n"
+		 << "8. Exit" << "\n"
 }
-
-void PrintPipeInfo(const Pipe& pipe)
+istream operator >> (istream& in, compress_Station& new_cs)
+{
+	cout << "Type name: ";
+	cin >> new_cs.name:
+	cout << "Type shops ammount: ";
+	cin >> new_cs.shops_num;
+	while (cin.fail() || new_cs.shops_num <= 0)
+	{
+		cin.clear();
+		cin.ignore(int(pow(10, 6)), '\n');
+		cout << "Type correct info (>0): ";
+		cin >> new_cs.shops_num;
+	}
+	cout << "Type efficiency: ";
+	cin >> new_cs.efficiency;
+	while (cin.fail())
+	{
+		cin.clear();
+		cin.ignore(int(pow(10, 6)), '\n');
+		cout << "Type correct info: ";
+		cin >> new_cs.efficiency;
+	}
+	return in;
+}
+ostream& operator << (ostream& out, const Compress_station& cs)
+{
+	out << "........" << "\n'"
+		<< "CS Name : " << cs.name << "\n"
+		<< "Overall shops: " << cs.shops_num << "\n"
+		<< "Busy shops: " << cs.busy_shops_num << "\n"
+		<< "Efficiency: " << cs.efficiency << "\n";
+		return out;
+}
+istream& operator >> (istream& in, Pipe& new_pipe)
+{
+	cout << "TY"
+}
 {
 	string repair_status = "False";
 	if (pipe.is_repairing)
