@@ -19,4 +19,10 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="KuchinLab1.exe" />
+    <None Include="Debug\KuchinLab1.exe">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
 </Project>

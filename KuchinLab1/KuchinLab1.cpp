@@ -31,18 +31,18 @@ Pipe CreatePipe()
 	while (cin.fail() || new_pipe.length <=0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), "\n");
+		cin.ignore(int(pow(10, 6)), '\n');
 		cout << "Type correct info (>0): ";
-		cin >> new_pipe.length
+		cin >> new_pipe.length;
 	}
 	cout << "Type diameter: ";
 	cin >> new_pipe.diameter;
 	while (cin.fail() || new_pipe.diameter <= 0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), "\n");
+		cin.ignore(int(pow(10, 6)), '\n');
 		cout << "Type correct info (>0): ";
-		cin >> new_pipe.diameter
+		cin >> new_pipe.diameter;
 	}
 	return new_pipe;
 }
@@ -81,7 +81,7 @@ void ChangePipeStatus(vector<Pipe>& pipes, string pipe_name)
 	int ind = -1;
 	for (Pipe pipe : pipes) {
 		ind++;
-		if (pipe.name = pipe_name) {
+		if (pipe.name == pipe_name) {
 			name_exists = true;
 			if (pipe.is_repairing) {
 				pipe.is_repairing = false;
@@ -100,14 +100,14 @@ void ChangePipeStatus(vector<Pipe>& pipes, string pipe_name)
 	}
 	cout << "Status Changed!\n";
 }
-void EditShops(vector<Compress_station>& stations, string ca_name, bool action, int shops_num)
+void EditShops(vector<Compress_station>& stations, string cs_name, bool action, int shops_num)
 {
 	bool name_exists = false;
 	bool num_correct = false;
 	int ind = -1;
 	for (Compress_station cs : stations) {
 		ind++;
-		if (cs.name = cs_name) {
+		if (cs.name == cs_name) {
 			name_exists = true;
 			if (action) {
 				if (shops_num <= cs.shops_num - cs.busy_shops_num)
@@ -259,7 +259,7 @@ ostream& operator << (ostream& out, const Pipe& pipe)
 	}
 	out
 		<< "Pipe Name : " << pipe.name << "\n"
-		<< "Pipe lenght:" << pipe.length << "\n"
+		<< "Pipe length:" << pipe.length << "\n"
 		<< "Pipe deameter:" << pipe.length << "\n"
 		<< "Is Reapairing: " << repair_status << "\n"
 		<< "......." << "\n";
@@ -275,7 +275,7 @@ int main()
 	{
 		ShowMenu();
 		string action = "";
-		cout << "Type nimber(1-8): ";
+		cout << "Type number(1-8): ";
 		cin >> action;
 		while (!is_number(action)) {
 			cout << "Wrong action, type again: ";
@@ -400,7 +400,7 @@ int main()
 			fin.open("data.txt", ios::in);
 			bool stations_part = false;
 			pipes.clear();
-			stations.clear()
+			stations.clear();
 			if (fin.is_open()) {
 				while (1) {
 					string str;
