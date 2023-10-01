@@ -134,6 +134,38 @@ void EditShops(vector<Compress_station>& stations, string ca_name, bool action, 
 		cout << "Invalid shops amount! Try again";
 	}
 }
+void SavePipe(ofstream& fout, const Pipe& pipe)
+{
+	fout << pipe.name << "\n"
+		<< pipe.length << "\n"
+		<< pipe.diameter << "\n"
+		<< pipe.is_repairing << "\n";
+}
+void SaveCS(ofstream& fout, const Compress_station& cs)
+{
+	fout << cs.name << "\n"
+		<< cs.shops_num << "\n"
+		<< cs.busy_shops_num << "\n"
+		<< cs.efficiency << "\n";
+}
+
+Pipe LoadPipe(ifstream & fin, string pipe_name) {
+		Pipe pipe;
+		pipe.name = pipe_name;
+		fin >> pipe.length;
+		fin >> pipe.diameter;
+		fin >> pipe.is_repairing;
+		return pipe;
+	}
+Compress_station LoadStation(ifstream& fin) {
+	Compress_station station;
+	fin >> station.name;
+	fin >> station.shops_num;
+	fin >> station.busy_shops_num;
+	fin >> station.efficiency;
+	return station;
+}
+
 istream operator >> (istream& in, Compress_station& new_cs)
 {
 	cout << "Type name: ";
@@ -293,9 +325,10 @@ int main()
 				cin.ignore(int(pow(10, 6)), '\n');
 				cout << "Type correct acton: ";
 				cin >> action;
-				cout << "Type amount of shops you want to edit: ";
-				cin >> shops_num;
-				while (cin.fail() || shops_num <= 0)
+			}
+			cout << "Type amount of shops you want to edit: ";
+			cin >> shops_num;
+			while (cin.fail() || shops_num <= 0)
 				{
 					cin.clear();
 					cin.ignore(int(pow(10, 6)), '\n');
@@ -308,9 +341,50 @@ int main()
 				}
 				EditShops(stations, cs_name, false, shops_num);
 				break;
+		}
+		case 6:
+		{
+			ofstream fout;
+			fout.open("data.txt", ios::out);
+			fout << "Pipes:\n";
+			if (fout.is_open())
+			{
+				for (Pipe pipe : pipes)
+				{
+					SavePipe(fout, pipe);
+				}
 			}
-
-
+			fout << "CompressStations:\n";
+			if (fout.is_open())
+			{
+				for (Compress_station cs : stations)
+				{
+					SaveCS(fout, cs);
+				}
+			}
+			fout.close();
+			break;
+		}
+		case 7:
+		{
+			ifstream fin;
+			fin.open("data.txt", ios::in);
+			if (fin.is_open()) {
+				while (1) {
+					string str;
+					fin >> str;
+					if (str != "Pipes:" && str != "CompressStations:" && str != "") {
+						pipes.push_back(LoadPipe(fin, str));
+					}
+					else if (str == "CompressStations:") {
+						stations.push_back(LoadStation(fin));
+					}
+					if (str == "") {
+						break;
+					}
+				}
+			}
+			break;
 		}
 		case 8:
 		{
