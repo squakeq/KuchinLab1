@@ -278,7 +278,7 @@ int main()
 		ShowMenu();
 		string action = "";
 		cout << "Type number(1-8): ";
-		getline(cin, action);
+		cin >> action;
 		while (!is_number(action)) {
 			cout << "Wrong action, type again: ";
 			cin >> action;
