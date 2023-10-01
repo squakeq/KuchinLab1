@@ -157,6 +157,7 @@ bool is_number(const string& s)
 {
 	return !s.empty() && find_if(s.begin(),
 		s.end(), [](unsigned char c) {return !isdigit(c); }) == s.end();
+	/* украл со StackOverflow без понятия как работает*/
 }
 
 Pipe LoadPipe(ifstream& fin, string pipe_name) {
@@ -183,6 +184,7 @@ Compress_station LoadStation(ifstream& fin) {
 }
 
 istream& operator >> (istream& in, Compress_station& new_cs)
+/*))))))))*/
 {
 	cout << "Type name: ";
 	cin.ignore(1, '\n');
@@ -276,7 +278,7 @@ int main()
 		ShowMenu();
 		string action = "";
 		cout << "Type number(1-8): ";
-		cin >> action;
+		getline(cin, action);
 		while (!is_number(action)) {
 			cout << "Wrong action, type again: ";
 			cin >> action;
