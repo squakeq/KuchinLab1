@@ -1,10 +1,12 @@
-﻿#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
+﻿#include <iostream> /* input/output*/
+#include <string> /* что-то не работало на stackoverflow сказали надо добавить в заголовочный <string>*/
+#include <fstream> /* чтение/запись*/
+#include <vector> /* Массивы */
+#include <iomanip> /* чтобы убрать округление*/
+
 
 using namespace std;
-struct Pipe
+struct Pipe /*создаем своей "класс" объектов*/
 {
 	string name;
 	double length = 0;
@@ -136,7 +138,7 @@ void EditShops(vector<Compress_station>& stations, string cs_name, bool action, 
 		return;
 	}
 	if (!num_correct) {
-		cout << "Invalid shops amount! Try again";
+		cout << "Invalid shops amount! Try again \n";
 	}
 }
 void SavePipe(ofstream& fout, const Pipe& pipe)
@@ -144,15 +146,35 @@ void SavePipe(ofstream& fout, const Pipe& pipe)
 	fout << pipe.name << "\n"
 		<< pipe.length << "\n"
 		<< pipe.diameter << "\n"
-		<< pipe.is_repairing;
+		<< pipe.is_repairing << "\n";
 }
 void SaveCS(ofstream& fout, const Compress_station& cs)
 {
 	fout << cs.name << "\n"
 		<< cs.shops_num << "\n"
 		<< cs.busy_shops_num << "\n"
-		<< cs.efficiency;
+		<< cs.efficiency << "\n";
 }
+
+bool is_digit(const string& s)
+{
+	for (int ind = 0; ind < s.length(); ind++)
+	{
+		if (ind == 0) {
+			if (!isdigit(s[ind])) {
+				return false;
+			}
+		}
+		else {
+			if (!isdigit(s[ind]) && s[ind] != '.') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+
 bool is_number(const string& s)
 {
 	return !s.empty() && find_if(s.begin(),
@@ -171,15 +193,21 @@ Pipe LoadPipe(ifstream& fin, string pipe_name) {
 		pipe.diameter = stoi(pipe_diameter);
 		string pipe_status;
 		getline(fin, pipe_status);
-		pipe.diameter = stoi(pipe_status);
+		pipe.is_repairing = stoi(pipe_status);
 		return pipe;
 	}
-Compress_station LoadStation(ifstream& fin) {
+Compress_station LoadStation(ifstream& fin, string name) {
 	Compress_station station;
-	fin >> station.name;
-	fin >> station.shops_num;
-	fin >> station.busy_shops_num;
-	fin >> station.efficiency;
+	station.name = name;
+	string shops;
+	getline(fin, shops);
+	station.shops_num = stoi(shops);
+	string busy_shops;
+	getline(fin, busy_shops);
+	station.busy_shops_num = stoi(busy_shops);
+	string efficiency;
+	getline(fin, efficiency);
+	station.efficiency = stoi(efficiency);
 	return station;
 }
 
@@ -187,30 +215,32 @@ istream& operator >> (istream& in, Compress_station& new_cs)
 /*))))))))*/
 {
 	cout << "Type name: ";
-	cin.ignore(1, '\n');
 	string name;
 	getline(cin, name);
 	new_cs.name = name;
 	cout << "Type shops ammount: ";
 	string shops_num;
-	cin >> shops_num;
+	getline(cin, shops_num);
 	while (!is_number(shops_num) || stoi(shops_num) <= 0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), '\n');
+		
 		cout << "Type correct info (>0): ";
 		cin >> shops_num;
 	}
 	new_cs.shops_num = stoi(shops_num);
 	cout << "Type efficiency: ";
 	string efficiency;
-	cin >> efficiency;
+	getline(cin, efficiency);
+	if (efficiency == "") {
+		getline(cin, efficiency);
+	}
 	while (!is_number(efficiency) || stoi(efficiency) <= 0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), '\n');
+	
 		cout << "Type correct info (>0): ";
-		cin >> efficiency;
+		getline(cin, efficiency);
 	}
 	new_cs.efficiency = stoi(efficiency);
 	return in;
@@ -218,7 +248,7 @@ istream& operator >> (istream& in, Compress_station& new_cs)
 ostream& operator << (ostream& out, const Compress_station& cs)
 {
 	out
-		<< "CS Name : " << cs.name << "\n"
+		<< "CS Name: " << cs.name << "\n"
 		<< "Overall shops: " << cs.shops_num << "\n"
 		<< "Busy shops: " << cs.busy_shops_num << "\n"
 		<< "Efficiency: " << cs.efficiency << "\n"
@@ -228,28 +258,32 @@ ostream& operator << (ostream& out, const Compress_station& cs)
 istream& operator >> (istream& in, Pipe& new_pipe)
 {
 	cout << "Type name: ";
-	cin.ignore(1, '\n');
+	
 	string name;
 	getline(cin, name);
 	new_pipe.name = name;
 	cout << "Type length: ";
-	cin >> new_pipe.length;
-	while (cin.fail() || new_pipe.length <= 0)
+	string length;
+	getline(cin, length);
+	while (!is_digit(length) || stof(length) <= 0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), '\n');
+		
 		cout << "Type correct info (>0): ";
-		cin >> new_pipe.length;
+		getline(cin, length);
 	}
+	new_pipe.length = stof(length);
 	cout << "Type diameter: ";
-	cin >> new_pipe.diameter;
-	while (cin.fail() || new_pipe.diameter <= 0)
+	string diameter;
+	getline(cin, diameter);
+	while (!is_number(diameter) || stoi(diameter) <= 0)
 	{
 		cin.clear();
-		cin.ignore(int(pow(10, 6)), '\n');
+		
 		cout << "Type correct info (>0): ";
-		cin >> new_pipe.diameter;
+		getline(cin, diameter);
 	}
+	new_pipe.diameter = stoi(diameter);
 	return in;
 }
 ostream& operator << (ostream& out, const Pipe& pipe)
@@ -262,7 +296,7 @@ ostream& operator << (ostream& out, const Pipe& pipe)
 	out
 		<< "Pipe Name : " << pipe.name << "\n"
 		<< "Pipe length:" << pipe.length << "\n"
-		<< "Pipe deameter:" << pipe.length << "\n"
+		<< "Pipe diameter:" << pipe.diameter << "\n"
 		<< "Is Reapairing: " << repair_status << "\n"
 		<< "......." << "\n";
 	return out;
@@ -278,10 +312,10 @@ int main()
 		ShowMenu();
 		string action = "";
 		cout << "Type number(1-8): ";
-		cin >> action;
-		while (!is_number(action)) {
+		getline(cin, action);
+		while (!is_number(action) && action != "") {
 			cout << "Wrong action, type again: ";
-			cin >> action;
+			getline(cin, action);
 		}
 		switch (stoi(action))
 		{
@@ -345,32 +379,34 @@ int main()
 		{
 			string cs_name = "";
 			string action = "";
-			int shops_num = 0;
+			string shops_num = 0;
 			cout << "Type station name: ";
-			cin >> cs_name;
+			getline(cin, cs_name);
 			cout << "Type action (activate/disable): ";
-			cin >> action;
+			getline(cin, action);
+			if (action == "") {
+				getline(cin, action);
+			}
 			while (action != "activate" && action != "disable")
 			{
 				cin.clear();
-				cin.ignore(int(pow(10, 6)), '\n');
 				cout << "Type correct acton: ";
-				cin >> action;
+				getline(cin, action);
 			}
 			cout << "Type amount of shops you want to edit: ";
-			cin >> shops_num;
-			while (cin.fail() || shops_num <= 0)
+			getline(cin, shops_num);
+			while (!is_number(shops_num) || cin.fail() || stoi(shops_num) <= 0)
 				{
 					cin.clear();
-					cin.ignore(int(pow(10, 6)), '\n');
+					
 					cout << "Type correct info: ";
-					cin >> shops_num;
+					getline(cin, shops_num);
 				}
 				if (action == "activate") {
-					EditShops(stations, cs_name, true, shops_num);
+					EditShops(stations, cs_name, true, stoi(shops_num));
 					break;
 				}
-				EditShops(stations, cs_name, false, shops_num);
+				EditShops(stations, cs_name, false, stoi(shops_num));
 				break;
 		}
 		case 6:
@@ -385,7 +421,7 @@ int main()
 					SavePipe(fout, pipe);
 				}
 			}
-			fout << "CompressStations: ";
+			fout << "CompressStations:\n";
 			if (fout.is_open())
 			{
 				for (Compress_station cs : stations)
@@ -401,22 +437,27 @@ int main()
 			ifstream fin;
 			fin.open("data.txt", ios::in);
 			bool stations_part = false;
+			bool pipes_part = false;
 			pipes.clear();
 			stations.clear();
 			if (fin.is_open()) {
 				while (1) {
 					string str;
 					getline(fin, str);
-					if (str != "Pipes:" && str != "CompressStations:" && str != "" && !stations_part) {
-						pipes.push_back(LoadPipe(fin, str));
+					if (str == "Pipes:") {
+						pipes_part = true;
 					}
 					else if (str == "CompressStations:") {
 						stations_part = true;
+						pipes_part = false;
+					}
+					else if (pipes_part && str != "") {
+						pipes.push_back(LoadPipe(fin, str));
 					}
 					else if (stations_part && str != "") {
-						stations.push_back(LoadStation(fin));
+						stations.push_back(LoadStation(fin, str));
 					}
-					if (str == "") {
+					else if (str == "") {
 						break;
 					}
 				}
@@ -427,12 +468,12 @@ int main()
 		{
 			return 0;
 		}
-		default:
-		{
-			cout << "Wrong action!\n";
-			cin.clear();
-			cin.ignore(int(pow(10, 6)), '\n');
-		}
+			default:
+			{
+				cout << "Wrong action!\n";
+				cin.clear();
+				cin.ignore(int(pow(10, 6)), '\n');
+			}
 		}
 	}
 }
