@@ -127,11 +127,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="KuchinLab1.cpp" />
+    <ClCompile Include="BooleanFuncs.cpp" />
+    <ClCompile Include="EditFuncs.cpp" />
+    <ClCompile Include="FileWorkingFuncs.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectCreation.cpp" />
+    <ClCompile Include="SearchFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug\KuchinLab1.exe" />
     <None Include="KuchinLab1.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BooleanFuncs.h" />
+    <ClInclude Include="EditFuncs.h" />
+    <ClInclude Include="FileWorkingFuncs.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="CS.h" />
+    <ClInclude Include="Networks.h" />
+    <ClInclude Include="Pipes.h" />
+    <ClInclude Include="ObjectCreation.h" />
+    <ClInclude Include="SearchFuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

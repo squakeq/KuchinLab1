@@ -1,0 +1,21 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <chrono>
+#include <ctime>
+#include <map>
+#include <unordered_map>
+#include <stack>
+#include <unordered_set>
+#include "BooleanFuncs.h"
+#include "EditFuncs.h"
+#include "FileWorkingFuncs.h"
+#include "Pipes.h"
+#include "ObjectCreation.h"
+#include "SearchFuncs.h"
+#include "CS.h"
+#include "Networks.h"
+using namespace std;
